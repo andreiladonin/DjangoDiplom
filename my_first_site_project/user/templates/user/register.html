@@ -1,0 +1,81 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+    <h2 class="mb-4">Регистрация</h2>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+                <div class="row">
+                    <div class="col-12 mb-2 p-2 rounded bg-danger text-white  bg-opacity-75">
+                        {{ error }}
+                    </div>
+                </div>
+        {% endfor %}
+        {% if errors %}
+            <div class="row">
+                <div class="col-12 mb-2 p-2 rounded bg-danger text-white  bg-opacity-75">
+                    {{ errors }}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row mb-3">
+            <label for="{{form.username.id_for_label}}" class="col-sm-2 col-form-label">Имя</label>
+            <div class="col-3">
+                {{ form.first_name }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.last_name.id_for_label}}" class="col-sm-2 col-form-label">Фамилия</label>
+              <div class="col-3">
+                  {{ form.last_name }}
+              </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.email.id_for_label}}" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-3">
+              {{ form.email }}
+          </div>
+        </div>
+           {% for sex in form.sex %}
+            <div class="form-check form-check-inline">
+                {{ sex.tag }}
+                <label class="form-check-label" for="{{ sex.id_for_label }}">{{ sex.choice_label }}</label>
+            </div>
+            {% endfor %}
+        <div class="row mb-3">
+            <label for="{{form.phone.id_for_label}}" class="col-sm-2 col-form-label">Номер телефона</label>
+          <div class="col-3">
+              {{ form.phone }}
+          </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.username.id_for_label}}" class="col-sm-2 col-form-label">Логин</label>
+          <div class="col-3">
+              {{ form.username }}
+          </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.password1.id_for_label}}" class="col-sm-2 col-form-label">Пароль</label>
+          <div class="col-3">
+              {{ form.password1 }}
+          </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.password2.id_for_label}}" class="col-sm-2 col-form-label">Повтор пароля</label>
+          <div class="col-sm-3">
+              {{ form.password2 }}
+          </div>
+        </div>
+        <div class="row mb-3">
+            <label for="{{form.image.id_for_label}}" class="col-3 col-form-label">Изображение профиля</label>
+          <div class="col-3">
+              {{ form.image }}
+          </div>
+        </div>
+
+         <button type="submit" class="btn btn-warning border border-dark">Зарегистрироваться</button>
+    </form>
+
+{% endblock %}

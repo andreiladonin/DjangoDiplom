@@ -1,0 +1,49 @@
+{% extends 'films/base.html' %}
+
+{% block content %}
+
+    <h2 class="mb-3">Все фильмы</h2>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-12 order-lg-last">
+            {% for category in categories %}
+                <div class="row">
+                    <a href="{% url 'films:category' category.id %}" class="mb-2 p-2 text-decoration-none link-dark border-bottom">{{ category.name }}</a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-9 col-md-12">
+            <div class="row">
+                {% for film in films %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <img class="rounded mx-auto d-block mb-4" src="/media/{{ film.image }}" width="200" height="" alt="">
+                        <h6 class="text-center mb-3">{{ film.name }}</h6>
+                        <a class="d-block text-center" href="{% url 'films:film' film.id %}">О фильме...</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                  {% if films.has_other_pages %}
+                      {% if films.has_previous %}
+                            <li class="page-item"><a class="page-link link-secondary" href="?page={{ films.previous_page_number }}">Предыдущая</a></li>
+                      {% endif %}
+                        {% for i in films.paginator.page_range %}
+                              {% if films.number == i %}
+                                    <li class="page-item active" aria-current="page"><span class="page-link">{{ i }}</span></li>
+                              {% else %}
+                                <li class="page-item"><a class="page-link link-secondary" href="?page={{ i }}">{{ i }}</a></li>
+                              {% endif %}
+                        {% endfor %}
+                      {% if films.has_next %}
+                            <li class="page-item"><a class="page-link link-secondary" href="?page={{ films.next_page_number }}">Следующая</a></li>
+                      {% endif %}
+                  {% endif %}
+              </ul>
+        </nav>
+    </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+
+{% extends 'films/base.html' %}
+
+{% block content %}
+
+    <h2 class="mb-4">{{ film.name }}</h2>
+
+    <div class="row mb-3">
+        <div class="col-lg-5 mb-3">
+            <img class="rounded mx-auto d-block mb-3" src="/media/{{ film.image }}" alt="">
+
+            {% if user.is_authenticated %}
+                {% if not is_favorite_film %}
+                    <form action="" method="POST" class="d-flex justify-content-center" >
+                        {% csrf_token %}
+                        <input type="hidden" name="favorite_film" value="{{ film.id }}">
+                        <button type="submit" class="btn btn-warning ps-5 pe-5 pt-2 pb-2">Добавить в избранное</button>
+                    </form>
+                {% else %}
+                    <div class="d-flex justify-content-center">
+                        <p class="text-white rounded bg-success text-center ps-5 pe-5 pt-2 pb-2">Фильм уже в избранном</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>Войдите чтобы добавить в избранное</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-7">
+            <div class="row">
+                <p class="fw-bold mb-3">Год выпуска</p>
+                <p>{{ film.year | date:"Y" }}</p>
+                <p class="fw-bold mb-3">Жанр</p>
+                <div class="d-flex mb-3">
+                    {% for category in film.category_list.all %}
+                        <a class="me-3 text-lowercase" href="{% url 'films:category' category.id %}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+                <p class="fw-bold mb-3">Обзор</p>
+                <p class="mb-3">{{ film.description }}</p>
+                <div class="col-12">
+                    {{ film.trailer|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4 col-mb-12">
+            <h3 class="mb-5">Актеры</h3>
+            <div class="d-flex flex-wrap flex-lg-row flex-md-row flex-xs-column">
+                {% for actor in film.actor_list.all %}
+                        <div class="ms-5 mb-4 align-self-xs-center">
+                            <img class="rounded mb-3 mx-auto d-block" width="180" height="250" src="/media/{{ actor.image }}" alt="">
+                            <h6 class="text-center mb-3">{{ actor.first_name }}  {{ actor.last_name }}</h6>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
